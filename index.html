@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>27Wart</title>
+
+    <link rel="stylesheet" type="text/css" href="css/carouselTicker.css" media="screen">
+    <link rel="stylesheet" href="css/27wart.css">
+
+    <script src="lib/jquery-3.7.0.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script>
+
+        window.onload = function () {
+
+            let body = document.querySelector('body');//wrap 불러오기
+            let header = document.querySelector('header');//헤더 불러오기
+            let cont = document.querySelectorAll('.cont');//모든 .cont 불러오기
+            let main = document.querySelector('main')//메인 불러오기
+
+            let AboutCont = main.querySelector('.about');//about컨텐츠 불러오기
+            let ProjectCont = main.querySelector('.project');//project컨텐츠 불러오기
+            let ArticleCont = main.querySelector('.article');//article컨텐츠 불러오기
+
+            let menuOpen = document.querySelector('.menu_open');//(모바일)메뉴오픈 불러오기
+            let mobileMenu = document.querySelector('.mobile_menu');//(모바일)메뉴gnb 불러오기
+            mobileMenu.style.opacity = '0';//메뉴오픈 두번 안눌러도 나오게 하기(필수)
+
+            let mobileAbout = mobileMenu.querySelector('.about');//모바일메뉴 about 불러오기
+            let mobileProject = mobileMenu.querySelector('.project');//모바일메뉴 project 불러오기
+            let mobileArticle = mobileMenu.querySelector('.article');//모바일메뉴 article 불러오기
+
+            let About = header.querySelector('.about');//헤더메뉴 about 불러오기
+            let Project = header.querySelector('.project');//헤더메뉴 project 불러오기
+            let Article = header.querySelector('.article');//헤더메뉴 article 불러오기
+
+            let menuStick = menuOpen.querySelectorAll('.menu_open span');//(모바일)메뉴오픈 span
+
+
+            //(반응형 변경)
+            //휠값에 따라 헤더 크기 변화하기 (최상단이 아니더라도 휠을 올리면 100px = 사용자가 헤더에 필요한 메뉴가 있을수도 있음.)
+            window.addEventListener('wheel', function (event) {
+
+                let eventY = event.deltaY;//스크롤Y값 구해오기.
+
+                if (eventY > 0) {
+                    header.style.height = '60px';
+                } else {
+                    header.style.height = '100px';
+                }
+
+            });//window.addEventListener() end
+
+
+            //피씨헤더메뉴 1차메뉴 클릭할때 거기에 해당하는 페이지로 이동하기
+            About.onclick = function () {
+                let AboutTop = AboutCont.offsetTop;
+                window.scrollTo({ left: 0, top: AboutTop, behavior: 'smooth' });
+            };//About.onclick end
+
+            Project.onclick = function () {
+                let ProjectTop = ProjectCont.offsetTop;
+                window.scrollTo({ left: 0, top: ProjectTop, behavior: 'smooth' });
+            };//Project.onclick end
+
+            Article.onclick = function () {
+                let ArticleTop = ArticleCont.offsetTop;
+                window.scrollTo({ left: 0, top: ArticleTop, behavior: 'smooth' });
+            };//Article.onclick end
+
+
+            //모바일메뉴 1차메뉴 클릭할때 거기에 해당하는 페이지로 이동하기
+            //메뉴 닫히기
+            mobileAbout.onclick = function () {
+                let AboutTop = AboutCont.offsetTop;
+
+                window.scrollTo({ left: 0, top: AboutTop, behavior: 'smooth' });
+                menuClose();
+            };//About.onclick end
+
+            mobileProject.onclick = function () {
+                let ProjectTop = ProjectCont.offsetTop;
+                window.scrollTo({ left: 0, top: ProjectTop, behavior: 'smooth' });
+                menuClose();
+            };//Project.onclick end
+
+            mobileArticle.onclick = function () {
+                let ArticleTop = ArticleCont.offsetTop;
+                window.scrollTo({ left: 0, top: ArticleTop, behavior: 'smooth' });
+                menuClose();
+            };//Article.onclick end
+
+
+            //스크롤 했을때 변화 생기기
+            window.onscroll = function () {
+                let AboutTop = AboutCont.offsetTop;
+                let ProjectTop = ProjectCont.offsetTop;
+                let ArticleTop = ArticleCont.offsetTop;
+
+                let scrollBar = window.scrollY;//스크롤바의 Y값 구해오기.
+
+                //스크롤이 제일 상단일때만 헤더 백그라운드 투명해지기, borderBottom = 0
+                //나머지때는 #000, borderBottom = 1px solid #fff
+                if (scrollBar > 0) {
+                    header.style.backgroundColor = "#000";
+                    header.style.borderBottom = "1px solid #fff";
+                } else if (scrollBar <= 0) {
+                    header.style.backgroundColor = "transparent";
+                    header.style.borderBottom = "0";
+                };
+
+                //해당하는 구역에 들어가면 해당 메뉴에 맞는 탭에 변화
+                if (scrollBar < AboutTop) {
+                    About.style.color = 'white'
+                    mobileAbout.style.color = 'white'
+                    Project.style.color = 'white'
+                    mobileProject.style.color = 'white'
+                    Article.style.color = 'white'
+                    mobileArticle.style.color = 'white'
+
+                    About.classList.remove('on')
+                    mobileAbout.classList.remove('on')
+                    Project.classList.remove('on')
+                    mobileProject.classList.remove('on')
+                    Article.classList.remove('on')
+                    mobileArticle.classList.remove('on')
+
+                } else if (scrollBar < ProjectTop) {
+                    About.style.color = 'tomato'
+                    mobileAbout.style.color = 'tomato'
+                    Project.style.color = 'white'
+                    mobileProject.style.color = 'white'
+                    Article.style.color = 'white'
+                    mobileArticle.style.color = 'white'
+
+                    About.classList.add('on')
+                    mobileAbout.classList.add('on')
+                    Project.classList.remove('on')
+                    mobileProject.classList.remove('on')
+                    Article.classList.remove('on')
+                    mobileArticle.classList.remove('on')
+
+                } else if (scrollBar < ArticleTop) {
+                    About.style.color = 'white'
+                    mobileAbout.style.color = 'white'
+                    Project.style.color = 'tomato'
+                    mobileProject.style.color = 'tomato'
+                    Article.style.color = 'white'
+                    mobileArticle.style.color = 'white'
+
+                    Project.classList.add('on')
+                    mobileProject.classList.add('on')
+                    About.classList.remove('on')
+                    mobileAbout.classList.remove('on')
+                    Article.classList.remove('on')
+                    mobileArticle.classList.remove('on')
+
+                } else {
+                    About.style.color = 'white'
+                    mobileAbout.style.color = 'white'
+                    Project.style.color = 'white'
+                    mobileProject.style.color = 'white'
+                    Article.style.color = 'tomato'
+                    mobileArticle.style.color = 'tomato'
+
+                    Article.classList.add('on')
+                    mobileArticle.classList.add('on')
+                    Project.classList.remove('on')
+                    mobileProject.classList.remove('on')
+                    About.classList.remove('on')
+                    mobileAbout.classList.remove('on')
+
+                }
+
+            };//window.onscroll end
+
+            function menuSlide() {
+                mobileMenu.style.opacity = '1'
+                mobileMenu.style.opacity = '1'
+                mobileMenu.style.transform = 'translateX(0)'
+                //(모바일)메뉴오픈 스타일 X
+                menuStick[0].style.transform = 'rotateZ(45deg)translateY(8.5px)'
+                menuStick[1].style.display = 'none'
+                menuStick[2].style.transform = 'rotateZ(-45deg)translateY(-8.5px)'
+                wrap.style.overflow = 'hidden'
+            }
+
+            function menuClose() {
+                mobileMenu.style.opacity = '0'
+                mobileMenu.style.transform = 'translateX(-100%)'
+                //(모바일)메뉴오픈 스타일 복구
+                menuStick[0].style.transform = 'rotateZ(0)translateY(0)'
+                menuStick[1].style.display = 'block'
+                menuStick[2].style.transform = 'rotateZ(0)translateY(0)'
+                wrap.style.overflow = 'visible'
+            }
+
+            //767이하 모바일 메뉴오픈 클릭했을때 모바일gnb나오게
+            //(모바일)메뉴오픈 스타일 바뀌기
+            menuOpen.onclick = function () {
+
+                /* let scrollPosition = window.scrollY; */
+
+                if (mobileMenu.style.opacity == '0') {
+                    menuSlide();
+                    body.classList.add('on');
+                } else {
+                    menuClose();
+                    body.classList.remove('on');
+                };
+
+            };//menuOpen.onclick end
+
+            //제이쿼리
+            $(function () {
+
+                //로그인창
+                $('.func .user').click(function (){
+
+                    $('.modal').toggleClass('on')
+                    $('.login_page').toggleClass('on')
+
+                });//$('.func .user').click() end
+
+
+                //스크롤 이벤트
+                $(window).scroll(function () {
+
+                    let scrollPosition = $(window).scrollTop();
+
+                    let aboutPosition = $('main .about').scrollTop();
+
+                    let projectPosition = $('main .project').scrollTop();
+
+                    let articlePosition = $('main .article').scrollTop();
+
+                    let windowWidth = window.outerWidth;
+
+                    if (scrollPosition > 500) {
+
+                        $('main .cont01 .inner .side_l').css({
+                            'opacity': '1',
+                            'transform': 'translate(0)',
+                            'transition': '1s'
+                        })
+
+                    }
+                    if (scrollPosition > 700) {
+                        $('main .about .cont01 .inner .side_r img').css({
+                            'opacity': '1',
+                            'transform': 'translateY(0)',
+                            'transition': '1s'
+                        })
+                    }
+
+                    if (scrollPosition > 1400) {
+                        $('main .about .cont01 .inner .point').css({
+                            'opacity': '1',
+                            'transition': '4s'
+                        })
+                    }
+
+                    console.log(scrollPosition)
+                    //cont02 해상도 920부터는 애니메이션 스크롤값이 변함.
+                    if (windowWidth > 920) {
+                        if (scrollPosition > 1900) {
+                            $('main .about .cont02 .inner h3').css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '2s'
+                            })
+                        }
+
+                        if (scrollPosition > 2200) {
+                            $('main .cont02 .inner .list').eq(0).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s ease-in-out'
+                            })
+                        }
+
+                        if (scrollPosition > 2900) {
+                            $('main .cont02 .inner .list').eq(1).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+
+                        if (scrollPosition > 3600) {
+                            $('main .cont02 .inner .list').eq(2).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+
+                        if (scrollPosition > 4300) {
+                            $('main .cont02 .inner .list').eq(3).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+                    } else if (windowWidth <= 280) {
+                        //해상도가 280보다 작을때 애니메이션 없앰
+
+                        $('main .cont01 .inner .side_l').css({
+                            'opacity': '1',
+                            'transform': 'translate(0)',
+                        })
+
+                        $('main .about .cont01 .inner .side_r img').css({
+                            'opacity': '1',
+                            'transform': 'translateY(0)',
+                        })
+
+                        $('main .about .cont01 .inner .point').css({
+                            'opacity': '1',
+                        })
+                        $('main .about .cont02 .inner h3').css({
+                            'transform': 'translateX(0)',
+                            'opacity': '1'
+                        })
+                        $('main .cont02 .inner .list').eq(0).css({
+                            'transform': 'translateX(0)',
+                            'opacity': '1'
+                        })
+                        $('main .cont02 .inner .list').eq(1).css({
+                            'transform': 'translateX(0)',
+                            'opacity': '1'
+                        })
+                        $('main .cont02 .inner .list').eq(2).css({
+                            'transform': 'translateX(0)',
+                            'opacity': '1',
+                        })
+                        $('main .cont02 .inner .list').eq(3).css({
+                            'transform': 'translateX(0)',
+                            'opacity': '1',
+                        })
+                    } else {
+                        // 920보다 해상도가 낮고 280보다 클때 cont02 애니메이션
+                        if (scrollPosition > 1500) {
+                            $('main .about .cont02 .inner h3').css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '2s'
+                            })
+                        }
+
+                        if (scrollPosition > 1700) {
+                            $('main .cont02 .inner .list').eq(0).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s ease-in-out'
+                            })
+                        }
+
+                        if (scrollPosition > 2000) {
+                            $('main .cont02 .inner .list').eq(1).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+
+                        if (scrollPosition > 2500) {
+                            $('main .cont02 .inner .list').eq(2).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+
+                        if (scrollPosition > 3000) {
+                            $('main .cont02 .inner .list').eq(3).css({
+                                'transform': 'translateX(0)',
+                                'opacity': '1',
+                                'transition': '1s'
+                            })
+                        }
+                    }
+
+
+
+                });//$(window).scroll() end
+
+            })
+
+        };//Script end
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrap">
+
+        <div class="modal">
+            <div class="login_page">
+
+                
+                <div class="log_info">
+                    <div class="login_other">
+                        <a href="#">구글</a>
+                        <a href="#">애플</a>
+                    </div>
+                    <p>또는 27WART 계정으로 로그인</p>
+                    <input class="id" type="text" required placeholder="아이디 / 휴대폰 번호">
+                    <input class="pw" type="password" required placeholder="비밀번호">
+
+                    <button>로그인 하기</button>
+                </div>
+
+                <label>
+                    <input type="checkbox" value="auto_login" checked>
+                    로그인 정보 저장
+                </label>
+
+                <div class="sign_in">
+                    <p>트립닷컴 계정이 없으신가요?</p>
+                    <a href="#">회원가입 ></a>
+                </div>
+
+            </div>
+        </div>
+        <header>
+            <div class="inner">
+                <h1><a href="#">27Wart</a></h1>
+
+                <nav class="pc">
+                    <ul class="gnb">
+                        <li class="about">ABOUT</li>
+                        <li class="project">PROJECT</li>
+                        <li class="article">ARTICLE</li>
+                        <li class="contact">CONTACT</li>
+                    </ul><!-- .gnb end -->
+                </nav><!-- .pc end -->
+
+                <div class="mobile menu_open">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div><!-- .mobile .menu_open -->
+
+                <div class="mobile_menu">
+                    <ul class="gnb">
+                        <li class="about">ABOUT</li>
+                        <li class="project">PROJECT</li>
+                        <li class="article">ARTICLE</li>
+                        <li class="contact">CONTACT</li>
+                    </ul><!-- .gnb end -->
+                </div><!-- .mobile .mobile_menu -->
+
+                <div class="func">
+                    <a href="#" class="sns"><img src="img/인스타.png" alt="1"></a>
+                    <a href="#" class="user"><img src="img/white_user.png" alt="1"></a>
+                </div><!-- .func end -->
+            </div><!-- .inner end -->
+        </header>
+
+        <main>
+            <section class="main_visual">
+                <div class="text">
+                    <div class="left_t">
+                        <p>여러분의 <strong>스토리</strong>로 만들어지는</p>
+                        <p>세상 하나뿐인 <strong>브랜드</strong></p>
+                    </div><!-- .left_text end -->
+                    <div class="cube">
+                        <div class="face front">27Wart</div>
+                        <div class="face back">27Wart</div>
+                        <div class="face left">27Wart</div>
+                        <div class="face right">27Wart</div>
+                        <div class="face top">27Wart</div>
+                        <div class="face bottom">27Wart</div>
+                    </div><!-- .cube end -->
+                    <div class="right_t">
+                        <p>나만의 브랜드를 <Strong>27Wart</Strong>와 함께</p>
+                        <p>시작하세요</p>
+                    </div><!-- .right_text end -->
+                </div>
+                <div class="scroll">
+                    <span></span>
+                    <p>Scroll</p>
+                </div>
+            </section>
+
+            <section class="about">
+                <section class="cont01">
+                    <div class="inner">
+                        <div class="side_l">
+                            <h3>Our mission</h3>
+                            <p>브랜드의 기준을 설계하는<br>디자인 컨설턴시</p>
+                            <span>We build brand experience<br>
+                                standards and creating<br>
+                                a sustainable brand.</span>
+                        </div><!-- .side_l end -->
+                        <div class="side_r">
+                            <img src="img/brand_transparent.png" alt="brand">
+                            <p>브랜드가 나아가야 할 방향과 목표는 피라미드처럼 단단한 밑바탕을 통해<br>
+                                구축되어야하며 창의적이고 혁신적인 브랜드 통합 과정을 통해 지속가능한<br>
+                                서비스 모델을 구축해 나아가야 합니다. 우리는 브랜드가 세상에 발걸음을<br>
+                                내딛을 수 있도록 차별화된 전략과 기준을 생각하고 설계합니다. 브랜드가 가진<br>
+                                속성을 이해하고 사람들과 정서적 교감할 수 있도록 끝 없이 고민하고 노력해<br>
+                                나아갑니다. 이것은 우리가 가진 경쟁력이자 창의적인 활동을 위한 원동력입니다. </p>
+                        </div><!-- .side_r end -->
+
+                        <div class="point">
+                            <p>"<strong> 27WART </strong>"는 새로운 세상에 발을 내딛고자 하는 모든 브랜드를 위해서<br>
+                                브랜드의 지속 가능한 성장을 위해 노력하는 사람들을 위해서 존재하는<br>
+                                브랜딩 파트너스입니다.</p>
+                        </div>
+                    </div><!-- .inner end -->
+                </section><!-- .cont01 end -->
+
+                <section class="cont02">
+                    <div class="inner">
+                        <h3>Service area</h3>
+
+                        <div class="list">
+                            <p>브랜드를 위한 첫걸음, 초기부터 단단하게 설계 디자인은 브랜드가 균형감과<br>
+                                통일감을 갖추도록 합니다. 호감을 형성하고 오랫동안 기억되는 브랜드를 위한<br>
+                                디자인 전략을 제안합니다.</p>
+                            <div>
+                                <p>Brand Identity</p>
+                                <span>the visible elements of a brand<br>
+                                    and distinguish the brand<br>
+                                    in consumers' minds
+                                </span>
+                                <img src="img/list_1.png" alt="1">
+                            </div>
+                        </div><!-- .list end -->
+
+                        <div class="list">
+                            <div>
+                                <p>Brand Strategy</p>
+                                <span>It provides planning services based<br>
+                                    on creating customer experience<br>
+                                    such as events, promotions, and<br>
+                                    pop-up stories.
+                                </span>
+                                <img src="img/list_2.png" alt="1">
+                            </div>
+                            <p>브랜드는 고객과 다양한 경험을 함께 나눌 수 있어야 합니다.<br>
+                                브랜드 런칭 행사, 이벤트, 옥외광고,<br>
+                                프로모션, 팝업스토어등 고객 경험 창출을 기반으로 기획 서비스를 제공합니다.</p>
+                        </div><!-- .list end -->
+
+                        <div class="list">
+                            <p>브랜드 경험을 통해 고객과 소통할 수 있는 영역을 제공합니다.<br>
+                                사진과 동영상 컨텐츠, UI / UX 등을 통해 크리에이티브하고<br>
+                                폭넓은 경험을 가진 브랜드로 성장하도록 돕습니다.</p>
+                            <div>
+                                <p>Brand Campaign</p>
+                                <span>It helps to grow into a brand width<br>
+                                    creative and extensive experience<br>
+                                    through photos, video content,<br>
+                                    and UI / UX
+                                </span>
+                                <img src="img/list_3.png" alt="1">
+                            </div>
+                        </div><!-- .list end -->
+
+                        <div class="list">
+                            <div>
+                                <p>Brand Contents</p>
+                                <span>It operated and managed by<br>
+                                    marketing team from data analysis to<br>
+                                    marketing solutions.
+                                </span>
+                                <img src="img/list_4.png" alt="1">
+                            </div>
+                            <p>브랜드의 매출성장을 돕는 마케팅 서비스입니다.<br>
+                                새로운 마케팅을 통해 브랜드 아이덴티티를 극대화합니다.<br>
+                                데이터 분석부터 마케팅 솔루션까지 마케팅 전문팀이 운영하고 관리합니다,.</p>
+                        </div><!-- .list end -->
+
+                    </div><!-- .inner end -->
+                </section><!-- .cont02 end -->
+            </section><!-- .about end -->
+
+            <section class="project">
+                <section class="cont03">
+                    <div class="inner">
+                        <h3>PROJECT</h3>
+                    </div><!-- .inner end -->
+
+                    <div id="carouselTicker-width-resize" class="carouselTicker">
+                        <ul class="carouselTicker__list">
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_1.gif" alt="뉴진스">
+                                        <img src="img/cont03_1_2.gif" alt="호버뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>CIRCLE CHART</h3>
+                                    <span>Re Branding (Bi, BX, UI/UX, Graphic Design, Visual Content)</span>
+                                    <p>CIRCLE CHART 는 대한민국 대중음악 공인차트입니다. 한국음악콘텐츠협회가 운영하고 문화체육관광부가 후원하는 사업으로 2010년 시작한
+                                        가온차트의
+                                        네이밍을 써클차트로 변경하고 브랜드 리뉴얼을 통해 새로운 Brand Experience Identity Design을 구축하였습니다.</p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_2.gif" alt="뉴진스">
+                                        <img src="img/cont03_2_2.gif" alt="호버뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>LOKALPAGE</h3>
+                                    <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
+                                    <p>해외 로컬 여행을 안전하게 경험할 수 있도록 돕는 “로컬페이지”의 Total Branding 개발하였습니다. 기존 투어 사 시스템에서 비즈니스 확장을 통한 콘텐츠 큐레이션 플랫폼으로 전략화 발돋움 할 수 있도록 FVD(Future Vision Design)디자인 전략을 구축하였습니다. </p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_3.gif" alt="뉴진스">
+                                        <img src="img/cont03_3_2.jpg" alt="호버뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>Desefore</h3>
+                                    <span>Nameing, Brand identity, Graphic Design, Visual Content</span>
+                                    <p>한영코리아(주체) X 형지(카스텔바작) X 네오커뮤니케이션즈 3사가 인볼브하여 진행하는 코스메틱 브랜드 개발을 수행하였습니다. 브랜드 정체성, 네이밍, 스토리텔링을 통하여 메세지 체계를 수립하였으며 이후 BXD, 광고 캠페인 및 콘텐츠를 제작하고 개발하였습니다.</p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_4.gif" alt="뉴진스">
+                                        <img src="img/cont03_4.gif" alt="뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>Jeunebeau</h3>
+                                    <span>Re Branding (Bi, BX, SNS, Visual Content)</span>
+                                    <p>피부과학연구소를 기반으로 한 스킨케어 코스메틱 브랜드 “쥬네뷰” 의 B.I 개발 및 SNS 콘텐츠운영을 진행하였습니다. 특허 성분 ‘셀릭서(SelixerTM) 개발을 통해 뷰티 에이징의 핵심 솔루션을 디자인 컨셉화하여 브랜드 정체성이 통합된 이미지 전략화 될 수 있도록 하였습니다. </p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_5.gif" alt="뉴진스">
+                                        <img src="img/cont03_5.gif" alt="뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>jacumen</h3>
+                                    <span>Total Branding (Bi, BX, Graphic Design, Visual Content)</span>
+                                    <p>SOCAR의 자회사인 제쿠먼 그룹의 B.I 디자인 개발을 진행하였습니다. 국내 금융사의 보편적인 디자인 정체성에서 벗어나 트렌디하고 감각적인 디자인을 전개하였습니다. financial field의 새로운 기준을 제시하는 FVD(Future Vision Design)디자인 전략을 구축하였습니다</p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_6.gif" alt="뉴진스">
+                                        <img src="img/cont03_6_2.gif" alt="호버뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>SUPERPRESSO</h3>
+                                    <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
+                                    <p>에스프레소 머신 커피 캡슐 브랜드 “슈퍼프레소” 의 B.I 개발을 진행하였습니다. 친환경 소재의 사용으로 기존 소비되는 플라스틱 패키징을 대체하는 특성을 고려하여 Logo 모티브를 개발하고 한국적인 디자인 그래픽 모티브가 패키지 전반에 적용될 수 있도록 하였습니다. </p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+
+                            <li class="carouselTicker__item">
+                                <a href="#">
+                                    <figure>
+                                        <img src="img/cont03_7.gif" alt="뉴진스">
+                                        <img src="img/cont03_7.gif" alt="뉴진스" class="hover_img">
+                                    </figure>
+                                    <h3>TEAMTOONGYM</h3>
+                                    <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
+                                    <p>하이앤드 피트니스 트레이닝 센터 “팀윤짐”의 B.I 디자인 리뉴얼을 진행하였습니다. 기존 보편화된 피트니스 시장의 틀을 깨고 고급화 전략 및 1:1 맞춤형 P.T서비스를 통해 독보적인 서비스를 제공하고자하는 취지에 부합한 디자인 전략을 구축하였습니다</p>
+                                </a>
+                            </li><!-- .carouselTicker__item end -->
+                        </ul><!-- .carouselTicker__list end -->
+                    </div><!-- #carouselTicker-width-resize .carouselTicker end -->
+
+                    <a href="#">+ more</a>
+
+                </section><!-- .cont03 end -->
+            </section><!-- .project end -->
+
+            <section class="article">
+                <section class="cont04">
+                    <div class="inner">
+                        <h3>NEWS</h3>
+                        <div class="list">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/news1.jpg" alt="news">
+                                </figure>
+                                <div class="side_r">
+                                    <div>
+                                        <h4>매력적인 도시브랜드를 만들어주는 파트너사</h4>
+                                        <p>지방자치단체 브랜드 파트너사, 이십칠와트</p>
+                                        <span>인문학적 관점과 디지털 융합소양을 결합한 브랜드 개발 컨설팅사로 도약</span>
+                                        <hr>
+                                    </div>
+
+                                    <span></span>
+
+                                    <p>도시나 마을을 알리기 위해서 지자체는 대표 그래픽디자인을 만들어 갑니다.<br>
+                                        이러한 디자인요소는 행사, 기관홍보 등 다양하게 적용되어 사용됩니다.<br>
+                                        통합 정체성을 시민들이 느낄 때 비로소 도시브랜드가 완성됩니다.<br>
+                                        그러나 일반적인 기준으로 기획하는 것이 아닌 시민관점으로 접근하여야 합니다.<br>
+                                        브랜드 경험의 시작은 사용자에 대한 이해와 공감에서부터 시작합니다. 도시 브랜드<br>
+                                        개발도 마찬가지입니다. 시민 공감을 디자인 씽킹으로 연결 짓는 것.<br>
+                                        이십칠와트는 이러한 고민에 진심인 사람들이 모여 있습니다.<br>
+                                        과정과 연결, 그리고 공감으로 시민과 지자체를 하나로 묶어줄 수 있는<br>
+                                        준비된 파트너사라고 생각합니다.</p>
+                                </div>
+                            </a>
+                        </div><!-- .list end -->
+
+                        <div class="list">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/news2.jpg" alt="news">
+                                </figure>
+                                <div class="side_r">
+                                    <div>
+                                        <h4>Design Korea 2022</h4>
+                                        <p>디자인 코리아 2022. 디자인 기업 플랫폼</p>
+                                        <span>이십칠와트 디자인 부스 운영, 바이어 및 내방객을 위한 하이브리드 전시</span>
+                                        <hr>
+                                    </div>
+
+                                    <span></span>
+
+                                    <p>[디자인코리아2022] 는 참여 국내외 디자인 에이전시와 디자인제품 제조기업의 B2B <br>
+                                        비즈니스 활성화를 위해 온라인 플랫폼 내 바이어매칭 프로그램을 운영합니다.<br>
+                                        비즈니스 참여기업은 온라인 플랫폼 내에 기업의 서비스와 제품을 소개하여 홍보를<br>
+                                        진행하고, 다양한 기업의 바이어들과 네트워킹하게 됩니다. 디자인코리아는<br>
+                                        참여기업의 활발한 홍보, 그리고 바이어들의 초청을 통해 더 많은 B2B 비즈니스의<br>
+                                        기회를 제공받는 네트워크 플랫폼입니다. </p>
+                                </div>
+                            </a>
+                        </div><!-- .list end -->
+
+                        <div class="list">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/news3.jpg" alt="news">
+                                </figure>
+                                <div class="side_r">
+                                    <div>
+                                        <h4>GD Award</h4>
+                                        <p>이십칠와트, 굿디자인(gd)어워드 수상</p>
+                                        <span>은상(Silver Prize) 산업통상자원부장관상 (그린디자인 특별상) 수상</span>
+                                        <hr>
+                                    </div>
+
+                                    <span></span>
+
+                                    <p>산업통상자원부(장관 이창양)가 주최하고 한국디자인진흥원(원장 윤상흠)이 주관하는<br>
+                                        국내 최대의 디자인박람회인 ‘디자인코리아 2022‘가 산업부 박일준 차관, 구자근<br>
+                                        국회의원, 한국디자인단체총연합회 김현선 회장, 서울디자인재단 권영길 이사장,<br>
+                                        디자인하우스 이영혜 대표 등 디자인업계 대표인사들이 참여한 가운데 11월 23일<br>
+                                        양재 aT센터에서 개최되고, 중소기업인 이십칠와트(대표 김선웅)가<br>
+                                        「2022 우수디자인(GD)상품」그린디자인특별상(은상, 산업통상자원부 장관)을<br>
+                                        수상하였다.</p>
+                                </div>
+                            </a>
+                        </div><!-- .list end -->
+                    </div><!-- .inner end -->
+                </section><!-- .cont04 end -->
+            </section><!-- .article end -->
+        </main>
+
+        <footer>
+            <div class="inner">
+                <div class="side_t">
+                    <p>Brand Centric Business. <strong>이십칠와트(27WART)</strong></p>
+                </div>
+
+                <ul class="side_c">
+                    <li>
+                        <p>Email</p>
+                        <span>contack@27watt.com</span>
+                    </li>
+                    <li>
+                        <p>Tell</p>
+                        <div>
+                            <span>+82 (0)2 1877 2827</span>
+                            <span>+82 (0)2 1877 2827</span>
+                        </div>
+                    </li>
+                    <li>
+                        <p>Address</p>
+                        <span>(05575) 3f , 132, Baekjegobun-ro, Songpa-gu, Seoul, Republic of Korea </span>
+                    </li>
+                </ul><!-- .side_c end -->
+
+                <div class="side_b">
+                    <div class="side_b_l">
+                        <p>Copyright 2023. KimTaeHo All pictures cannot be copied without permission.</p>
+                    </div><!-- .side_b_l end -->
+                    <div class="side_b_r">
+
+                        <a href="#">
+                            <img src="img/인스타.png" alt="instagram">
+                            <p>INSTAGRAM</p>
+                        </a>
+                        <a href="#">
+                            <img src="img/비핸스.png" alt="behance">
+                            <p>Behance</p>
+                        </a>
+
+                    </div><!-- .side_b_r end -->
+                </div><!-- .side_b end -->
+            </div><!-- .inner end -->
+        </footer>
+
+    </div><!-- #wrap end -->
+
+
+    <!-- Script -->
+    <script src="lib/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.carouselTicker.js"></script>
+    <script type="text/javascript" src="lib/start.js"></script>
+
+</body>
+
+</html>
