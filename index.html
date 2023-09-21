@@ -217,7 +217,7 @@
             $(function () {
 
                 //로그인창
-                $('.func .user').click(function (){
+                $('.func .user').click(function () {
 
                     $('.modal').toggleClass('on')
                     $('.login_page').toggleClass('on')
@@ -244,25 +244,24 @@
                             'opacity': '1',
                             'transform': 'translate(0)',
                             'transition': '1s'
-                        })
+                        });
 
-                    }
+                    };
                     if (scrollPosition > 700) {
                         $('main .about .cont01 .inner .side_r img').css({
                             'opacity': '1',
                             'transform': 'translateY(0)',
                             'transition': '1s'
-                        })
-                    }
+                        });
+                    };
 
                     if (scrollPosition > 1400) {
                         $('main .about .cont01 .inner .point').css({
                             'opacity': '1',
                             'transition': '4s'
-                        })
-                    }
+                        });
+                    };
 
-                    console.log(scrollPosition)
                     //cont02 해상도 920부터는 애니메이션 스크롤값이 변함.
                     if (windowWidth > 920) {
                         if (scrollPosition > 1900) {
@@ -271,7 +270,7 @@
                                 'opacity': '1',
                                 'transition': '2s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 2200) {
                             $('main .cont02 .inner .list').eq(0).css({
@@ -279,7 +278,7 @@
                                 'opacity': '1',
                                 'transition': '1s ease-in-out'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 2900) {
                             $('main .cont02 .inner .list').eq(1).css({
@@ -287,7 +286,7 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 3600) {
                             $('main .cont02 .inner .list').eq(2).css({
@@ -295,7 +294,7 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 4300) {
                             $('main .cont02 .inner .list').eq(3).css({
@@ -303,43 +302,43 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
+                        };
                     } else if (windowWidth <= 280) {
                         //해상도가 280보다 작을때 애니메이션 없앰
 
                         $('main .cont01 .inner .side_l').css({
                             'opacity': '1',
                             'transform': 'translate(0)',
-                        })
+                        });
 
                         $('main .about .cont01 .inner .side_r img').css({
                             'opacity': '1',
                             'transform': 'translateY(0)',
-                        })
+                        });
 
                         $('main .about .cont01 .inner .point').css({
                             'opacity': '1',
-                        })
+                        });
                         $('main .about .cont02 .inner h3').css({
                             'transform': 'translateX(0)',
                             'opacity': '1'
-                        })
+                        });
                         $('main .cont02 .inner .list').eq(0).css({
                             'transform': 'translateX(0)',
                             'opacity': '1'
-                        })
+                        });
                         $('main .cont02 .inner .list').eq(1).css({
                             'transform': 'translateX(0)',
                             'opacity': '1'
-                        })
+                        });
                         $('main .cont02 .inner .list').eq(2).css({
                             'transform': 'translateX(0)',
                             'opacity': '1',
-                        })
+                        });
                         $('main .cont02 .inner .list').eq(3).css({
                             'transform': 'translateX(0)',
                             'opacity': '1',
-                        })
+                        });
                     } else {
                         // 920보다 해상도가 낮고 280보다 클때 cont02 애니메이션
                         if (scrollPosition > 1500) {
@@ -348,7 +347,7 @@
                                 'opacity': '1',
                                 'transition': '2s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 1700) {
                             $('main .cont02 .inner .list').eq(0).css({
@@ -356,7 +355,7 @@
                                 'opacity': '1',
                                 'transition': '1s ease-in-out'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 2000) {
                             $('main .cont02 .inner .list').eq(1).css({
@@ -364,7 +363,7 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 2500) {
                             $('main .cont02 .inner .list').eq(2).css({
@@ -372,7 +371,7 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
+                        };
 
                         if (scrollPosition > 3000) {
                             $('main .cont02 .inner .list').eq(3).css({
@@ -380,14 +379,29 @@
                                 'opacity': '1',
                                 'transition': '1s'
                             })
-                        }
-                    }
-
-
+                        };
+                    };
 
                 });//$(window).scroll() end
 
-            })
+
+                //crosshair 마우스 따라다니기
+                $(window).mousemove(function (e) {
+
+                    let mouseX = e.pageX;
+                    let mouseY = e.pageY;
+
+                    $('.crosshair').css({
+                        'top': mouseY,
+                        'left': mouseX
+                    })
+
+                    console.log(mouseX)
+                    console.log(mouseY)
+
+                });//$('html').mouseenter() end
+
+            });//jQuery end
 
         };//Script end
 
@@ -400,21 +414,24 @@
 
     <div id="wrap">
 
+        <div class="crosshair"></div>
+
         <div class="modal">
             <div class="login_page">
 
-                
+
                 <div class="log_info">
                     <div class="login_other">
                         <a href="#">구글</a>
                         <a href="#">애플</a>
-                    </div>
+                    </div><!-- .login_other end -->
+
                     <p>또는 27WART 계정으로 로그인</p>
                     <input class="id" type="text" required placeholder="아이디 / 휴대폰 번호">
                     <input class="pw" type="password" required placeholder="비밀번호">
 
                     <button>로그인 하기</button>
-                </div>
+                </div><!-- log_info end -->
 
                 <label>
                     <input type="checkbox" value="auto_login" checked>
@@ -424,10 +441,11 @@
                 <div class="sign_in">
                     <p>트립닷컴 계정이 없으신가요?</p>
                     <a href="#">회원가입 ></a>
-                </div>
+                </div><!-- .sign_in end -->
 
-            </div>
-        </div>
+            </div><!-- .login_page end -->
+        </div><!-- .modal end -->
+
         <header>
             <div class="inner">
                 <h1><a href="#">27Wart</a></h1>
@@ -613,7 +631,9 @@
                                     </figure>
                                     <h3>LOKALPAGE</h3>
                                     <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
-                                    <p>해외 로컬 여행을 안전하게 경험할 수 있도록 돕는 “로컬페이지”의 Total Branding 개발하였습니다. 기존 투어 사 시스템에서 비즈니스 확장을 통한 콘텐츠 큐레이션 플랫폼으로 전략화 발돋움 할 수 있도록 FVD(Future Vision Design)디자인 전략을 구축하였습니다. </p>
+                                    <p>해외 로컬 여행을 안전하게 경험할 수 있도록 돕는 “로컬페이지”의 Total Branding 개발하였습니다. 기존 투어 사 시스템에서 비즈니스
+                                        확장을 통한 콘텐츠 큐레이션 플랫폼으로 전략화 발돋움 할 수 있도록 FVD(Future Vision Design)디자인 전략을 구축하였습니다.
+                                    </p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
 
@@ -625,7 +645,8 @@
                                     </figure>
                                     <h3>Desefore</h3>
                                     <span>Nameing, Brand identity, Graphic Design, Visual Content</span>
-                                    <p>한영코리아(주체) X 형지(카스텔바작) X 네오커뮤니케이션즈 3사가 인볼브하여 진행하는 코스메틱 브랜드 개발을 수행하였습니다. 브랜드 정체성, 네이밍, 스토리텔링을 통하여 메세지 체계를 수립하였으며 이후 BXD, 광고 캠페인 및 콘텐츠를 제작하고 개발하였습니다.</p>
+                                    <p>한영코리아(주체) X 형지(카스텔바작) X 네오커뮤니케이션즈 3사가 인볼브하여 진행하는 코스메틱 브랜드 개발을 수행하였습니다. 브랜드 정체성,
+                                        네이밍, 스토리텔링을 통하여 메세지 체계를 수립하였으며 이후 BXD, 광고 캠페인 및 콘텐츠를 제작하고 개발하였습니다.</p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
 
@@ -637,7 +658,9 @@
                                     </figure>
                                     <h3>Jeunebeau</h3>
                                     <span>Re Branding (Bi, BX, SNS, Visual Content)</span>
-                                    <p>피부과학연구소를 기반으로 한 스킨케어 코스메틱 브랜드 “쥬네뷰” 의 B.I 개발 및 SNS 콘텐츠운영을 진행하였습니다. 특허 성분 ‘셀릭서(SelixerTM) 개발을 통해 뷰티 에이징의 핵심 솔루션을 디자인 컨셉화하여 브랜드 정체성이 통합된 이미지 전략화 될 수 있도록 하였습니다. </p>
+                                    <p>피부과학연구소를 기반으로 한 스킨케어 코스메틱 브랜드 “쥬네뷰” 의 B.I 개발 및 SNS 콘텐츠운영을 진행하였습니다. 특허 성분
+                                        ‘셀릭서(SelixerTM) 개발을 통해 뷰티 에이징의 핵심 솔루션을 디자인 컨셉화하여 브랜드 정체성이 통합된 이미지 전략화 될 수 있도록
+                                        하였습니다. </p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
 
@@ -649,7 +672,9 @@
                                     </figure>
                                     <h3>jacumen</h3>
                                     <span>Total Branding (Bi, BX, Graphic Design, Visual Content)</span>
-                                    <p>SOCAR의 자회사인 제쿠먼 그룹의 B.I 디자인 개발을 진행하였습니다. 국내 금융사의 보편적인 디자인 정체성에서 벗어나 트렌디하고 감각적인 디자인을 전개하였습니다. financial field의 새로운 기준을 제시하는 FVD(Future Vision Design)디자인 전략을 구축하였습니다</p>
+                                    <p>SOCAR의 자회사인 제쿠먼 그룹의 B.I 디자인 개발을 진행하였습니다. 국내 금융사의 보편적인 디자인 정체성에서 벗어나 트렌디하고 감각적인
+                                        디자인을 전개하였습니다. financial field의 새로운 기준을 제시하는 FVD(Future Vision Design)디자인 전략을
+                                        구축하였습니다</p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
 
@@ -661,7 +686,8 @@
                                     </figure>
                                     <h3>SUPERPRESSO</h3>
                                     <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
-                                    <p>에스프레소 머신 커피 캡슐 브랜드 “슈퍼프레소” 의 B.I 개발을 진행하였습니다. 친환경 소재의 사용으로 기존 소비되는 플라스틱 패키징을 대체하는 특성을 고려하여 Logo 모티브를 개발하고 한국적인 디자인 그래픽 모티브가 패키지 전반에 적용될 수 있도록 하였습니다. </p>
+                                    <p>에스프레소 머신 커피 캡슐 브랜드 “슈퍼프레소” 의 B.I 개발을 진행하였습니다. 친환경 소재의 사용으로 기존 소비되는 플라스틱 패키징을 대체하는
+                                        특성을 고려하여 Logo 모티브를 개발하고 한국적인 디자인 그래픽 모티브가 패키지 전반에 적용될 수 있도록 하였습니다. </p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
 
@@ -673,7 +699,8 @@
                                     </figure>
                                     <h3>TEAMTOONGYM</h3>
                                     <span>Total branding (Bi, Bx, UI / UX, Graphic Design, Visual Content)</span>
-                                    <p>하이앤드 피트니스 트레이닝 센터 “팀윤짐”의 B.I 디자인 리뉴얼을 진행하였습니다. 기존 보편화된 피트니스 시장의 틀을 깨고 고급화 전략 및 1:1 맞춤형 P.T서비스를 통해 독보적인 서비스를 제공하고자하는 취지에 부합한 디자인 전략을 구축하였습니다</p>
+                                    <p>하이앤드 피트니스 트레이닝 센터 “팀윤짐”의 B.I 디자인 리뉴얼을 진행하였습니다. 기존 보편화된 피트니스 시장의 틀을 깨고 고급화 전략 및
+                                        1:1 맞춤형 P.T서비스를 통해 독보적인 서비스를 제공하고자하는 취지에 부합한 디자인 전략을 구축하였습니다</p>
                                 </a>
                             </li><!-- .carouselTicker__item end -->
                         </ul><!-- .carouselTicker__list end -->

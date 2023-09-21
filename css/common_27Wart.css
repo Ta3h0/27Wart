@@ -46,6 +46,19 @@ body::-webkit-scrollbar {
     left: 0%;
 }
 
+.crosshair {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.65;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+}
+
 .login_page.on {
     opacity: 1;
     transition: 1.5s;
